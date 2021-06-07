@@ -1,0 +1,5 @@
+.selector {
+  content: "use variable of 'module/a'. (value: a)";
+  font-size: 16px;
+  content: "use private variable of 'module/a'. (value: a-private)";
+}

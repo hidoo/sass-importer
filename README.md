@@ -1,6 +1,6 @@
 # @hidoo/sass-importer
 
-> Custom Sass importer
+> Custom sass importer.
 
 ## Installation
 
@@ -8,7 +8,19 @@
 $ npm install @hidoo/sass-importer
 ```
 
-TODO
+## Usage
+
+```js
+import sass from 'sass';
+import sassImporter from '@hidoo/sass-importer';
+
+sass.render({
+  file: 'path/to/entry.scss',
+  importer: [
+    sassImporter()
+  ]
+});
+```
 
 ## Test
 

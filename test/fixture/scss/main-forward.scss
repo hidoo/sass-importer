@@ -1,0 +1,14 @@
+@use "sass:meta";
+@use "./module/b" as *;
+
+.selector {
+  content: "use variable of 'module/a'. (value: #{$a-var})";
+  font-size: $unit-font-base-size;
+
+  @if meta.global-variable-exists("_a-private-var") {
+    content: "use private variable of 'module/a'. (value: #{$_a-private-var})";
+  }
+  @else {
+    content: "Can't use private variable.";
+  }
+}

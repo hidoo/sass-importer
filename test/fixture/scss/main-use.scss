@@ -1,0 +1,15 @@
+@use "sass:meta";
+@use "~@hidoo/unit/src/settings";
+@use "./module/a" as *;
+
+.selector {
+  content: "use variable of 'module/a'. (value: #{$a-var})";
+  font-size: settings.$unit-font-base-size;
+
+  @if meta.global-variable-exists("_a-private-var") {
+    content: "use private variable of 'module/a'. (value: #{$_a-private-var})";
+  }
+  @else {
+    content: "Can't use private variable.";
+  }
+}

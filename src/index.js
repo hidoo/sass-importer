@@ -2,28 +2,6 @@ import path from 'path';
 import {default as resolveCallback} from 'resolve';
 
 /**
- * another main fields used in package.json
- *
- * @type {Array<String>}
- */
-const mainFields = [
-  'scss',
-  'sass',
-  'main.scss',
-  'main.sass'
-];
-
-/**
- * extension for search
- *
- * @type {Array<String>}
- */
-const extensions = [
-  '.scss',
-  '.sass'
-];
-
-/**
  * promisified resolve
  *
  * @param {String} id package id
@@ -53,39 +31,51 @@ function isSassFile(url = '') {
 }
 
 /**
- * return url is lagacy package url specifiy or not
- *
- * @param {String} [url=''] @use or @import rule’s url
- * @return {Boolean}
- */
-function isLegacyPackage(url = '') {
-  return url.match(/^~/) !== null;
-}
-
-/**
  * return url is scoped package url specifiy or not
  *
  * @param {String} [url=''] @use or @import rule’s url
  * @return {Boolean}
  */
 function isScopedPackage(url = '') {
-  return url.match(/^@/) !== null;
+  return url.startsWith('@');
+}
+
+/**
+ * normalize package url
+ *
+ * @param {String} [url=''] @use or @import rule’s url
+ * @param {Object} options options
+ * @param {String} [options.packagePrefix=''] module path prefix to use when loading modules, same as legacy version of sass-loader
+ * @return {Object}
+ */
+function normalizePackageURL(url, options = {}) {
+  const {packagePrefix} = options;
+
+  if (typeof packagePrefix !== 'string' || packagePrefix === '') {
+    return url;
+  }
+
+  return url.startsWith(packagePrefix) ?
+    url.slice(1) : url; // eslint-disable-line no-magic-numbers
 }
 
 /**
  * parse url
  *
  * @param {String} [url=''] @use or @import rule’s url
+ * @param {Object} options options
+ * @param {String} [options.packagePrefix=''] module path prefix to use when loading modules, same as legacy version of sass-loader
  * @return {Object}
  */
-function parseURL(url = '') {
+function parseURL(url = '', options = {}) {
+  const opts = {packagePrefix: '', ...options};
   const parsed = {};
 
   if (typeof url !== 'string' || url === '') {
     return parsed;
   }
 
-  const normalized = isLegacyPackage(url) ? url.replace(/^~/, '') : url;
+  const normalized = normalizePackageURL(url, opts);
   const isScoped = isScopedPackage(normalized);
   const [id, pathName] = normalized.split('/')
     .reduce(([ids, pathNames], component, index) => {
@@ -120,11 +110,15 @@ function parseURL(url = '') {
  * find module by package id
  *
  * @param {String} id package id
+ * @param {Object} options options
+ * @param {Array<String>} [options.mainFields=[]] another main fields used in package.json
+ * @param {Object} [options.resolverOptions={}] package resolver options
  * @return {Promise<Object>}
  */
-async function findById(id = '') {
+async function findById(id = '', options = {}) {
   try {
-    const {error, file, pkg} = await resolve(id);
+    const opts = {mainFields: [], ...options};
+    const {error, file, pkg} = await resolve(id, opts.resolverOptions);
 
     if (error) {
       return {error};
@@ -134,10 +128,10 @@ async function findById(id = '') {
       return {file};
     }
     else if (typeof pkg === 'object') {
-      const results = await Promise.all(mainFields.map(
+      const results = await Promise.all(opts.mainFields.map(
         (field) => {
           if (typeof pkg[field] === 'string' && pkg[field] !== '') {
-            return resolve(`${id}/${pkg[field]}`);
+            return resolve(`${id}/${pkg[field]}`, opts.resolverOptions);
           }
           return Promise.resolve({});
         }
@@ -163,25 +157,29 @@ async function findById(id = '') {
  *
  * @param {String} id package id
  * @param {String} pathName path name
+ * @param {Object} options options
+ * @param {Array<String>} [options.extensions=[]] extension for search modules
+ * @param {Object} [options.resolverOptions={}] package resolver options
  * @return {Promise<Object>}
  */
-async function findByIdWithPathName(id, pathName) {
+async function findByIdWithPathName(id, pathName, options = {}) {
   try {
+    const opts = {extensions: [], ...options};
     const dirName = pathName.match(/\//) === null ?
       null : `${path.dirname(pathName)}`;
     const baseName = path.basename(pathName);
-    const options = [
+    const files = [
       [id, dirName, `_${baseName}`],
       [id, dirName, baseName, '_index'],
       [id, dirName, baseName],
       [id, dirName, baseName, 'index']
     ];
 
-    const results = await Promise.all(options.reduce(
+    const results = await Promise.all(files.reduce(
       (prevRequests, option) => {
-        const requests = extensions.map(
+        const requests = opts.extensions.map(
           (ext) =>
-            resolve(`${option.filter(Boolean).join('/')}${ext}`)
+            resolve(`${option.filter(Boolean).join('/')}${ext}`, opts.resolverOptions)
         );
 
         return [
@@ -207,32 +205,75 @@ async function findByIdWithPathName(id, pathName) {
 }
 
 /**
- * sass custom impoter
+ * default options
  *
- * @param {String} [url=''] @use or @import rule’s url
- * @param {String} [prev=''] url that contained @use or @import
- * @param {Function} resolved callback when resolved
- * @return {Promise}
+ * @type {Object}
  */
-export default async function sassImporter(url, prev, resolved) {
-  try {
-    const {id, pathName} = parseURL(url);
+const defaultOptions = {
+  extensions: [
+    '.scss',
+    '.sass'
+  ],
+  mainFields: [
+    'scss',
+    'sass',
+    'main.scss',
+    'main.sass'
+  ],
+  packagePrefix: '~',
+  resolverOptions: {}
+};
+
+/**
+ * factory of sass importer
+ *
+ * @param {Object} options options
+ * @param {Array<String>} [options.extensions=['.scss', '.sass']] extension for search modules
+ * @param {Array<String>} [options.mainFields=['scss', 'sass', 'main.scss', 'main.sass']] another main fields used in package.json
+ * @param {String} [options.packagePrefix='~'] module path prefix to use when loading modules, same as legacy version of sass-loader
+ * @param {Object} [options.resolverOptions={}] package resolver options
+ *   see: {@link https://github.com/browserify/resolve#resolveid-opts-cb opts of resolve}
+ * @return {Function}
+ *
+ * @example
+ * import sass from 'sass';
+ * import sassImporter from '@hidoo/sass-importer';
+ *
+ * sass.render({
+ *   file: 'path/to/entry.scss',
+ *   importer: [
+ *     sassImporter({
+ *       extensions: ['.scss'],
+ *       mainFields: ['sass'],
+ *       packagePrefix: '^'
+ *     })
+ *   ]
+ * });
+ */
+export default function sassImporter(options = {}) {
+  const opts = {...defaultOptions, ...options};
+
+  /**
+   * sass impoter
+   *
+   * @param {String} [url=''] @use or @import rule’s url
+   * @param {String} [prev=''] url that contained @use or @import
+   * @param {Function} done callback when resolved
+   * @return {void}
+   */
+  return (url, prev, done) => {
+    const {id, pathName} = parseURL(url, opts);
 
     if (!id) {
-      return resolved(null);
+      done(null);
     }
 
-    if (pathName && pathName !== '.') {
-      const {error, file} = await findByIdWithPathName(id, pathName);
+    const promise = pathName && pathName !== '.' ?
+      findByIdWithPathName(id, pathName, opts) : findById(id, opts);
 
-      return resolved(!error && file ? {file} : null);
-    }
-
-    const {error, file} = await findById(id);
-
-    return resolved(!error && file ? {file} : null);
-  }
-  catch (error) {
-    return resolved(error);
-  }
+    promise
+      .then(({error, file}) => {
+        done(!error && file ? {file} : null);
+      });
+  };
 }
