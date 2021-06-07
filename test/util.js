@@ -1,5 +1,4 @@
 import {promises as fs} from 'fs';
-import Fiber from 'fibers';
 import {default as resolveCallback} from 'resolve';
 import sass from 'sass';
 
@@ -26,10 +25,7 @@ export function render(options) {
   return new Promise(
     (done, fail) =>
       sass.render(
-        {
-          ...options,
-          fiber: Fiber
-        },
+        options,
         (error, results) => {
           if (error) {
             return fail(error);
