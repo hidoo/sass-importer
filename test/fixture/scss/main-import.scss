@@ -5,7 +5,7 @@
 
 .selector {
   content: "use variable of 'module/a'. (value: #{$a-var})";
-  font-size: $unit-font-base-size;
+  font-size: $font-base-size;
 
   @if global-variable-exists("_a-private-var") {
     content: "use private variable of 'module/a'. (value: #{$_a-private-var})";

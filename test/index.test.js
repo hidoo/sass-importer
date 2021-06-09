@@ -129,7 +129,7 @@ describe('sass-importer', () => {
 @import "~@hidoo/unit/src/settings";
 
 .selector {
-  font-size: $unit-font-base-size;
+  font-size: $font-base-size;
 }
 `,
           outputStyle: 'compressed'
@@ -163,7 +163,7 @@ describe('sass-importer', () => {
 @use "~@hidoo/unit/src/settings";
 
 .selector {
-  font-size: settings.$unit-font-base-size;
+  font-size: settings.$font-base-size;
 }
 `,
           outputStyle: 'compressed'
