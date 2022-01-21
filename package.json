@@ -23,7 +23,7 @@
   "author": "hidoo",
   "license": "MIT",
   "dependencies": {
-    "resolve": "1.20.0"
+    "resolve": "1.21.1"
   },
   "devDependencies": {
     "@babel/core": "7.16.10",
