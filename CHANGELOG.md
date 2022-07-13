@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/hidoo/unit-sass/compare/v0.7.0...v0.8.0) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency resolve to v1.21.1 ([a8769ba](https://github.com/hidoo/unit-sass/commit/a8769ba8f4cd2691347ede409307826e7f2a27f9))
+* **deps:** update dependency resolve to v1.22.1 ([d8b94f6](https://github.com/hidoo/unit-sass/commit/d8b94f68acb41c18aff1630feef94f748443d3cb))
+
+
+
+
+
 # [0.7.0](https://github.com/hidoo/unit-sass/compare/v0.6.0...v0.7.0) (2022-01-20)
 
 **Note:** Version bump only for package @hidoo/sass-importer

@@ -1,6 +1,6 @@
 {
   "name": "@hidoo/sass-importer",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Custom Sass importer.",
   "main": "lib/index.js",
   "files": [
@@ -29,7 +29,7 @@
     "@babel/core": "7.16.12",
     "@babel/preset-env": "7.16.11",
     "@babel/register": "7.16.9",
-    "@hidoo/unit": "^0.7.0",
+    "@hidoo/unit": "^0.8.0",
     "babel-preset-power-assert": "3.0.0",
     "bootstrap": "5.1.3",
     "mocha": "9.2.2",
