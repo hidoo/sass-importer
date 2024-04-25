@@ -1,5 +1,7 @@
 # @hidoo/sass-importer
 
+[![Test](https://github.com/hidoo/sass-importer/actions/workflows/test.yml/badge.svg)](https://github.com/hidoo/sass-importer/actions/workflows/test.yml)
+
 > Custom sass importer.
 
 ## Installation
