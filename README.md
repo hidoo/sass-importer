@@ -7,7 +7,7 @@
 ## Installation
 
 ```sh
-$ npm install @hidoo/sass-importer
+npm install @hidoo/sass-importer
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ sass.render({
 ## Test
 
 ```sh
-$ yarn test
+pnpm test
 ```
 
 ## License
