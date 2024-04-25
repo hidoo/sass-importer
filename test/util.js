@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import { default as resolveCallback } from 'resolve';
-import sass from 'sass';
+import * as sass from 'sass';
 
 /**
  * async read file
