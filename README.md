@@ -16,9 +16,7 @@ import sassImporter from '@hidoo/sass-importer';
 
 sass.render({
   file: 'path/to/entry.scss',
-  importer: [
-    sassImporter()
-  ]
+  importer: [sassImporter()]
 });
 ```
 

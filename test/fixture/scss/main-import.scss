@@ -9,8 +9,7 @@
 
   @if global-variable-exists("_a-private-var") {
     content: "use private variable of 'module/a'. (value: #{$_a-private-var})";
-  }
-  @else {
+  } @else {
     content: "Can't use private variable.";
   }
 }

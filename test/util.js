@@ -1,5 +1,5 @@
-import {promises as fs} from 'fs';
-import {default as resolveCallback} from 'resolve';
+import fs from 'node:fs/promises';
+import { default as resolveCallback } from 'resolve';
 import sass from 'sass';
 
 /**
@@ -22,21 +22,20 @@ export async function readFile(path, options) {
  * @return  {Promise<Object>}
  */
 export function render(options) {
-  return new Promise(
-    (done, fail) =>
-      sass.render(
-        options,
-        (error, results) => {
-          if (error) {
-            return fail(error);
-          }
-          return done({results: {
+  return new Promise((done, fail) => {
+    sass.render(options, (error, results) => {
+      if (error) {
+        fail(error);
+      } else {
+        done({
+          results: {
             ...results,
             css: results.css.toString().trim()
-          }});
-        }
-      )
-  );
+          }
+        });
+      }
+    });
+  });
 }
 
 /**
@@ -47,14 +46,13 @@ export function render(options) {
  * @return  {Promise<Object>}
  */
 export function resolve(id, options) {
-  return new Promise(
-    (done, fail) =>
-      resolveCallback(id, options, (error, file) => {
-        if (error) {
-          return fail(error);
-        }
-        return done(file.toString().trim());
-      })
-  );
+  return new Promise((done, fail) => {
+    resolveCallback(id, options, (error, file) => {
+      if (error) {
+        fail(error);
+      } else {
+        done(file.toString().trim());
+      }
+    });
+  });
 }
-

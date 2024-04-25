@@ -1,38 +1,30 @@
-/* eslint max-len: off, no-magic-numbers: off, no-sync: off */
+import assert from 'node:assert';
+import path from 'node:path';
+import sassImporter from '../src/index.js';
+import { readFile, render, resolve } from './util.js';
 
-import assert from 'assert';
-import path from 'path';
-import sassImporter from '../src';
-import {readFile, render, resolve} from './util';
+describe('@hidoo/sass-importer', () => {
+  let basePath = null;
+  let options = null;
 
-const basePath = process.cwd();
-const options = {importer: [sassImporter()]};
-
-describe('sass-importer', () => {
+  before(() => {
+    basePath = process.cwd();
+    options = { importer: [sassImporter()] };
+  });
 
   it('should call done with null if module can not resolved.', async () => {
     const cases = [
-      [
-        [
-          '',
-          ''
-        ],
-        null
-      ],
-      [
-        [
-          '@hoge/fuga',
-          ''
-        ],
-        null
-      ]
+      [['', ''], null],
+      [['@hoge/fuga', ''], null]
     ];
 
-    await Promise.all(cases.map(
-      ([[url, prev], expected]) => sassImporter(url, prev, (actual) => {
-        assert.deepStrictEqual(actual, expected);
-      })
-    ));
+    await Promise.all(
+      cases.map(([[url, prev], expected]) =>
+        sassImporter(url, prev, (actual) => {
+          assert.deepEqual(actual, expected);
+        })
+      )
+    );
   });
 
   it('should call done with module path if module resolved.', async () => {
@@ -41,30 +33,21 @@ describe('sass-importer', () => {
       // + non scoped package
       // + use "sass" field in package.json
       [
-        [
-          'bootstrap',
-          ''
-        ],
+        ['bootstrap', ''],
         {
           file: await resolve('bootstrap/scss/bootstrap.scss')
         }
       ],
       // with ~ (deprecated)
       [
-        [
-          '~bootstrap',
-          ''
-        ],
+        ['~bootstrap', ''],
         {
           file: await resolve('bootstrap/scss/bootstrap.scss')
         }
       ],
       // with pathname
       [
-        [
-          'bootstrap/scss/accordion',
-          ''
-        ],
+        ['bootstrap/scss/accordion', ''],
         {
           file: await resolve('bootstrap/scss/_accordion.scss')
         }
@@ -74,50 +57,40 @@ describe('sass-importer', () => {
       // + scoped package
       // + use "main" field in package.json
       [
-        [
-          '@hidoo/unit',
-          ''
-        ],
+        ['@hidoo/unit', ''],
         {
           file: await resolve('@hidoo/unit')
         }
       ],
       // with ~ (deprecated)
       [
-        [
-          '~@hidoo/unit',
-          ''
-        ],
+        ['~@hidoo/unit', ''],
         {
           file: await resolve('@hidoo/unit')
         }
       ],
       // with pathname
       [
-        [
-          '@hidoo/unit/src',
-          ''
-        ],
+        ['@hidoo/unit/src', ''],
         {
           file: await resolve('@hidoo/unit/src/index.scss')
         }
       ],
       [
-        [
-          '@hidoo/unit/src/unit/icon/core',
-          ''
-        ],
+        ['@hidoo/unit/src/unit/icon/core', ''],
         {
           file: await resolve('@hidoo/unit/src/unit/icon/_core.scss')
         }
       ]
     ];
 
-    await Promise.all(cases.map(
-      ([[url, prev], expected]) => sassImporter(url, prev, (actual) => {
-        assert.deepStrictEqual(actual, expected);
-      })
-    ));
+    await Promise.all(
+      cases.map(([[url, prev], expected]) =>
+        sassImporter(url, prev, (actual) => {
+          assert.deepEqual(actual, expected);
+        })
+      )
+    );
   });
 
   it('should resolve file by @import rule.', async () => {
@@ -142,16 +115,20 @@ describe('sass-importer', () => {
         {
           file: path.resolve(basePath, 'test/fixture/scss/main-import.scss')
         },
-        await readFile(path.resolve(basePath, 'test/fixture/css/main-import.css'))
+        await readFile(
+          path.resolve(basePath, 'test/fixture/css/main-import.css')
+        )
       ]
     ];
 
-    await Promise.all(cases.map(
-      ([opts, expected]) => render({...options, ...opts}).then(({error, results}) => {
-        assert(typeof error === 'undefined');
-        assert.deepStrictEqual(results.css, expected);
-      })
-    ));
+    await Promise.all(
+      cases.map(([opts, expected]) =>
+        render({ ...options, ...opts }).then(({ error, results }) => {
+          assert(typeof error === 'undefined');
+          assert.deepEqual(results.css, expected);
+        })
+      )
+    );
   });
 
   it('should resolve file by @use rule.', async () => {
@@ -180,12 +157,14 @@ describe('sass-importer', () => {
       ]
     ];
 
-    await Promise.all(cases.map(
-      ([opts, expected]) => render({...options, ...opts}).then(({error, results}) => {
-        assert(typeof error === 'undefined');
-        assert.deepStrictEqual(results.css, expected);
-      })
-    ));
+    await Promise.all(
+      cases.map(([opts, expected]) =>
+        render({ ...options, ...opts }).then(({ error, results }) => {
+          assert(typeof error === 'undefined');
+          assert.deepEqual(results.css, expected);
+        })
+      )
+    );
   });
 
   it('should resolve file by @forward rule.', async () => {
@@ -195,16 +174,19 @@ describe('sass-importer', () => {
         {
           file: path.resolve(basePath, 'test/fixture/scss/main-forward.scss')
         },
-        await readFile(path.resolve(basePath, 'test/fixture/css/main-forward.css'))
+        await readFile(
+          path.resolve(basePath, 'test/fixture/css/main-forward.css')
+        )
       ]
     ];
 
-    await Promise.all(cases.map(
-      ([opts, expected]) => render({...options, ...opts}).then(({error, results}) => {
-        assert(typeof error === 'undefined');
-        assert.deepStrictEqual(results.css, expected);
-      })
-    ));
+    await Promise.all(
+      cases.map(([opts, expected]) =>
+        render({ ...options, ...opts }).then(({ error, results }) => {
+          assert(typeof error === 'undefined');
+          assert.deepEqual(results.css, expected);
+        })
+      )
+    );
   });
-
 });
