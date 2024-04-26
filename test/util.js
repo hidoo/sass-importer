@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import { default as resolveCallback } from 'resolve';
+import asyncResolve from 'resolve';
 import * as sass from 'sass';
 
 /**
@@ -16,7 +16,7 @@ export async function readFile(path, options) {
 }
 
 /**
- * promisified sass.render
+ * wrapper of sass.render
  *
  * @param {Object} options options
  * @return  {Promise<Object>}
@@ -47,7 +47,7 @@ export function render(options) {
  */
 export function resolve(id, options) {
   return new Promise((done, fail) => {
-    resolveCallback(id, options, (error, file) => {
+    asyncResolve(id, options, (error, file) => {
       if (error) {
         fail(error);
       } else {
