@@ -14,7 +14,10 @@
   "overrides": [
     {
       "files": ["**/*.test.js"],
-      "extends": ["@hidoo/eslint-config/+mocha"]
+      "extends": ["@hidoo/eslint-config/+mocha"],
+      "rules": {
+        "node/no-process-env": "off"
+      }
     }
   ]
 }

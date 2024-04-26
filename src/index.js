@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { default as resolveCallback } from 'resolve';
+import { pathToFileURL } from 'node:url';
+import asyncResolve from 'resolve';
 
 /**
  * promisified resolve
@@ -10,7 +11,7 @@ import { default as resolveCallback } from 'resolve';
  */
 function resolve(id, options) {
   return new Promise((done) => {
-    resolveCallback(id, options, (error, file, pkg) => {
+    asyncResolve(id, options, (error, file, pkg) => {
       if (error) {
         done({ error });
       } else {
@@ -204,7 +205,12 @@ async function findByIdWithPathName(id, pathName, options = {}) {
 /**
  * default options
  *
- * @type {Object}
+ * @typedef {Object} defaultOptions default options
+ * @property {Array<String>} extensions extension for search modules
+ * @property {Array<String>} mainFields another main fields used in package.json
+ * @property {String} packagePrefix module path prefix to use when loading modules, same as legacy version of sass-loader
+ * @property {Object} resolverOptions package resolver options
+ *   see: {@link https://github.com/browserify/resolve#resolveid-opts-cb opts of resolve}
  */
 const defaultOptions = {
   extensions: ['.scss', '.sass'],
@@ -214,35 +220,39 @@ const defaultOptions = {
 };
 
 /**
- * factory of sass importer
+ * factory of importer
  *
- * @param {Object} options options
- * @param {Array<String>} options.extensions extension for search modules
- * @param {Array<String>} options.mainFields another main fields used in package.json
- * @param {String} options.packagePrefix module path prefix to use when loading modules, same as legacy version of sass-loader
- * @param {Object} options.resolverOptions package resolver options
- *   see: {@link https://github.com/browserify/resolve#resolveid-opts-cb opts of resolve}
- * @return {Function}
+ * @param {defaultOptions} options options
+ * @return {import('sass').LegacyAsyncImporter}
  * @example
- * import sass from 'sass';
- * import sassImporter from '@hidoo/sass-importer';
+ * import * as sass from 'sass';
+ * import { createImporter } from '@hidoo/sass-importer';
  *
- * sass.render({
+ * const options = {
  *   file: 'path/to/entry.scss',
  *   importer: [
- *     sassImporter({
+ *     createImporter({
  *       extensions: ['.scss'],
  *       mainFields: ['sass'],
  *       packagePrefix: '^'
  *     })
  *   ]
+ * };
+ * const { css } = await new Promise((resolve, reject) => {
+ *   sass.render(options, (error, result) => {
+ *     if (error) {
+ *       reject(error);
+ *     } else {
+ *       resolve(result);
+ *     }
+ *   });
  * });
  */
-export default function sassImporter(options = {}) {
+export function createImporter(options = {}) {
   const opts = { ...defaultOptions, ...options };
 
   /**
-   * sass impoter
+   * importer
    *
    * @param {String} url @use or @import rule’s url
    * @param {String} prev url that contained @use or @import
@@ -264,5 +274,50 @@ export default function sassImporter(options = {}) {
     promise.then(({ error, file }) => {
       done(!error && file ? { file } : null);
     });
+  };
+}
+
+/**
+ * factory of file importer
+ *
+ * @param {defaultOptions} options options
+ * @return {import('sass').FileImporter<async>}
+ * @example
+ * import * as sass from 'sass';
+ * import { createFileImporter } from '@hidoo/sass-importer';
+ *
+ * const options = {
+ *   importers: [
+ *     createFileImporter({
+ *       extensions: ['.scss'],
+ *       mainFields: ['sass'],
+ *       packagePrefix: '^'
+ *     })
+ *   ]
+ * };
+ * const { css } = await sass.compileAsync('path/to/entry.scss', options);
+ */
+export function createFileImporter(options = {}) {
+  const importer = createImporter(options);
+
+  return {
+    /**
+     * find file url from @use or @import rule’s url
+     *
+     * @param {String} url @use or @import rule’s url
+     * @param {import('sass').CanonicalizeContext} context context
+     * @return {Promise<null|URL>}
+     */
+    async findFileUrl(url, { containingUrl: prevUrl }) {
+      const prev = prevUrl?.pathname;
+      const result = await new Promise((done) => {
+        importer(url, prev, done);
+      });
+
+      if (result && result.file) {
+        return new URL(pathToFileURL(result.file));
+      }
+      return null;
+    }
   };
 }
