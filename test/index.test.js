@@ -451,6 +451,32 @@ describe('@hidoo/sass-importer', () => {
           })
         );
       });
+
+      it('should resolve file by @forward rule.', async () => {
+        const cases = [
+          [
+            path.resolve(basePath, 'test/fixture/scss/main-forward.scss'),
+            {},
+            await readFile(
+              path.resolve(basePath, 'test/fixture/css/main-forward.css')
+            )
+          ]
+        ];
+
+        await Promise.all(
+          cases.map(async ([src, opts, expected]) => {
+            const { css } = await sass.compileAsync(src, {
+              ...options,
+              ...opts
+            });
+
+            assert.deepEqual(css.trim(), expected);
+            if (DEBUG) {
+              console.log(css, expected);
+            }
+          })
+        );
+      });
     });
   });
 });
