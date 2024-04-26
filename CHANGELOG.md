@@ -1,48 +1,51 @@
-# Change Log
-
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-# [0.9.0](https://github.com/hidoo/unit-sass/compare/v0.8.0...v0.9.0) (2023-04-17)
-
-**Note:** Version bump only for package @hidoo/sass-importer
-
-
-
-
-
-# [0.8.0](https://github.com/hidoo/unit-sass/compare/v0.7.0...v0.8.0) (2022-07-13)
+# [1.0.0](https://github.com/hidoo/sass-importer/compare/v0.9.0...v1.0.0) (2024-04-26)
 
 
 ### Bug Fixes
 
-* **deps:** update dependency resolve to v1.21.1 ([a8769ba](https://github.com/hidoo/unit-sass/commit/a8769ba8f4cd2691347ede409307826e7f2a27f9))
-* **deps:** update dependency resolve to v1.22.1 ([d8b94f6](https://github.com/hidoo/unit-sass/commit/d8b94f68acb41c18aff1630feef94f748443d3cb))
+* **deps:** update dependency resolve to v1.22.2 ([6d676c2](https://github.com/hidoo/sass-importer/commit/6d676c277cf21cd20b29fa651f08027718c70b44))
+* **deps:** update dependency resolve to v1.22.4 ([5c3ab0c](https://github.com/hidoo/sass-importer/commit/5c3ab0c1ab93e4ab927b926efd6d0bf0ba632efd))
+* **deps:** update dependency resolve to v1.22.8 ([c4ef909](https://github.com/hidoo/sass-importer/commit/c4ef9092679d99bba2849fcf7cf2ea1d6a3b38ba))
+
+
+* fix!: support compileAsync API ([50a0b86](https://github.com/hidoo/sass-importer/commit/50a0b860fc5fe1ddcec19c13200d76bcd88007bf))
+
+
+### BREAKING CHANGES
+
+* change legacy importer to export as createImporter.
 
 
 
-
-
-# [0.7.0](https://github.com/hidoo/unit-sass/compare/v0.6.0...v0.7.0) (2022-01-20)
-
-**Note:** Version bump only for package @hidoo/sass-importer
+# [0.9.0](https://github.com/hidoo/sass-importer/compare/v0.8.0...v0.9.0) (2023-04-17)
 
 
 
+# [0.8.0](https://github.com/hidoo/sass-importer/compare/v0.7.0...v0.8.0) (2022-07-13)
 
 
-# [0.6.0](https://github.com/hidoo/unit-sass/compare/v0.5.0...v0.6.0) (2021-06-09)
+### Bug Fixes
 
-**Note:** Version bump only for package @hidoo/sass-importer
-
-
-
+* **deps:** update dependency resolve to v1.21.1 ([1814276](https://github.com/hidoo/sass-importer/commit/18142768ee757ed30edc21310f54cabb819a5e36))
+* **deps:** update dependency resolve to v1.22.1 ([187bb37](https://github.com/hidoo/sass-importer/commit/187bb371ce8513781f5a4c46631dbcf096f4240b))
 
 
-# [0.5.0](https://github.com/hidoo/unit-sass/compare/v0.4.4...v0.5.0) (2021-06-08)
+
+# [0.7.0](https://github.com/hidoo/sass-importer/compare/v0.6.0...v0.7.0) (2022-01-20)
+
+
+
+# [0.6.0](https://github.com/hidoo/sass-importer/compare/v0.5.0...v0.6.0) (2021-06-09)
+
+
+
+# [0.5.0](https://github.com/hidoo/sass-importer/compare/793589acdfa0d8cafbd9b7555076a62e4f4ead29...v0.5.0) (2021-06-08)
 
 
 ### Features
 
-* **sass-importer:** add custom sass importer ([2a38273](https://github.com/hidoo/unit-sass/commit/2a38273504483fdcc588eae116cdbeb009dbf27d))
-* **sass-importer:** adjust and update test cases ([a1fdd67](https://github.com/hidoo/unit-sass/commit/a1fdd67fb6133df96cc12cb14fbae173a4c44106))
+* **sass-importer:** add custom sass importer ([793589a](https://github.com/hidoo/sass-importer/commit/793589acdfa0d8cafbd9b7555076a62e4f4ead29))
+* **sass-importer:** adjust and update test cases ([12ccfed](https://github.com/hidoo/sass-importer/commit/12ccfedded295e4e56c1d5369211aa3a39a79ddc))
+
+
+
