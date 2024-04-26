@@ -13,12 +13,45 @@ npm install @hidoo/sass-importer
 ## Usage
 
 ```js
-import sass from 'sass';
-import sassImporter from '@hidoo/sass-importer';
+import * as sass from 'sass';
+import { createFileImporter } from '@hidoo/sass-importer';
 
-sass.render({
+const options = {
+  importers: [
+    createFileImporter({
+      extensions: ['.scss'],
+      mainFields: ['sass'],
+      packagePrefix: '^'
+    })
+  ]
+};
+const { css } = await sass.compileAsync('path/to/entry.scss', options);
+```
+
+### Use with legacy API
+
+```js
+import * as sass from 'sass';
+import { createImporter } from '@hidoo/sass-importer';
+
+const options = {
   file: 'path/to/entry.scss',
-  importer: [sassImporter()]
+  importer: [
+    createImporter({
+      extensions: ['.scss'],
+      mainFields: ['sass'],
+      packagePrefix: '^'
+    })
+  ]
+};
+const { css } = await new Promise((resolve, reject) => {
+  sass.render(options, (error, result) => {
+    if (error) {
+      reject(error);
+    } else {
+      resolve(result);
+    }
+  });
 });
 ```
 
