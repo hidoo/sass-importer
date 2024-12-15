@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       resolve:
-        specifier: 1.22.8
-        version: 1.22.8
+        specifier: 1.22.9
+        version: 1.22.9
     devDependencies:
       '@commitlint/cli':
         specifier: 19.4.1
@@ -1449,6 +1449,10 @@ packages:
     resolution: {integrity: sha512-z0vtXSwucUJtANQWldhbtbt7BnL0vxiFjIdDLAatwhDYty2bad6s+rijD6Ri4YuYJubLzIJLUidCh09e1djEVQ==}
     engines: {node: '>= 0.4'}
 
+  is-core-module@2.16.0:
+    resolution: {integrity: sha512-urTSINYfAYgcbLb0yDQ6egFm6h3Mo1DcF9EkyXSRjjzdHbsulg01qhwWuXdOoUBuTkbQ80KDboXa0vFJ+BDH+g==}
+    engines: {node: '>= 0.4'}
+
   is-data-view@1.0.1:
     resolution: {integrity: sha512-AHkaJrsUVW6wq6JS8y3JnM/GJF/9cf+k20+iDzlSaJrinEo5+7vRiteOSwBhHRiAyQATN1AmY4hwzxJKPmYf+w==}
     engines: {node: '>= 0.4'}
@@ -2028,8 +2032,8 @@ packages:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
     engines: {node: '>=8'}
 
-  resolve@1.22.8:
-    resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==}
+  resolve@1.22.9:
+    resolution: {integrity: sha512-QxrmX1DzraFIi9PxdG5VkRfRwIgjwyud+z/iBwfRRrVmHc+P9Q7u2lSSpQ6bjr2gy5lrqIiU9vb6iAeGf2400A==}
     hasBin: true
 
   restore-cursor@5.1.0:
@@ -3623,7 +3627,7 @@ snapshots:
     dependencies:
       debug: 3.2.7
       is-core-module: 2.15.1
-      resolve: 1.22.8
+      resolve: 1.22.9
     transitivePeerDependencies:
       - supports-color
 
@@ -3713,7 +3717,7 @@ snapshots:
       eslint-utils: 2.1.0
       ignore: 5.3.2
       minimatch: 3.1.2
-      resolve: 1.22.8
+      resolve: 1.22.9
       semver: 6.3.1
 
   eslint-plugin-sort-class-members@1.20.0(eslint@8.57.1):
@@ -4121,6 +4125,10 @@ snapshots:
   is-callable@1.2.7: {}
 
   is-core-module@2.15.1:
+    dependencies:
+      hasown: 2.0.2
+
+  is-core-module@2.16.0:
     dependencies:
       hasown: 2.0.2
 
@@ -4659,9 +4667,9 @@ snapshots:
 
   resolve-from@5.0.0: {}
 
-  resolve@1.22.8:
+  resolve@1.22.9:
     dependencies:
-      is-core-module: 2.15.1
+      is-core-module: 2.16.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
@@ -4928,7 +4936,7 @@ snapshots:
   stylelint-value-no-unknown-custom-properties@6.0.1(stylelint@16.11.0(typescript@5.7.2)):
     dependencies:
       postcss-value-parser: 4.2.0
-      resolve: 1.22.8
+      resolve: 1.22.9
       stylelint: 16.11.0(typescript@5.7.2)
 
   stylelint@16.11.0(typescript@5.7.2):
