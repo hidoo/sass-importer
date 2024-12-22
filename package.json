@@ -37,7 +37,7 @@
   "author": "hidoo",
   "license": "MIT",
   "dependencies": {
-    "resolve": "1.22.9"
+    "resolve": "1.22.10"
   },
   "devDependencies": {
     "@commitlint/cli": "19.4.1",
