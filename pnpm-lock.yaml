@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       resolve:
-        specifier: 1.22.10
-        version: 1.22.10
+        specifier: 1.22.11
+        version: 1.22.11
     devDependencies:
       '@commitlint/cli':
         specifier: 19.8.0
@@ -2114,8 +2114,8 @@ packages:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
     engines: {node: '>=8'}
 
-  resolve@1.22.10:
-    resolution: {integrity: sha512-NPRy+/ncIMeDlTAsuqwKIiferiawhefFJtkNSW0qZJEqMEb+qBt/77B/jGeeek+F0uOeN05CDa6HXbbIgtVX4w==}
+  resolve@1.22.11:
+    resolution: {integrity: sha512-RfqAvLnMl313r7c9oclB1HhUEAezcpLjz95wFH4LVuhk9JF/r22qmVP9AMmOU4vMX7Q8pN8jwNg/CSpdFnMjTQ==}
     engines: {node: '>= 0.4'}
     hasBin: true
 
@@ -2655,7 +2655,7 @@ snapshots:
       '@babel/traverse': 7.27.4
       '@babel/types': 7.27.3
       convert-source-map: 2.0.0
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.3
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -2730,7 +2730,7 @@ snapshots:
       '@babel/parser': 7.27.4
       '@babel/template': 7.27.2
       '@babel/types': 7.27.3
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.3
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -3804,7 +3804,7 @@ snapshots:
     dependencies:
       debug: 3.2.7
       is-core-module: 2.16.1
-      resolve: 1.22.10
+      resolve: 1.22.11
     transitivePeerDependencies:
       - supports-color
 
@@ -3894,7 +3894,7 @@ snapshots:
       eslint-utils: 2.1.0
       ignore: 5.3.2
       minimatch: 3.1.2
-      resolve: 1.22.10
+      resolve: 1.22.11
       semver: 6.3.1
 
   eslint-plugin-sort-class-members@1.20.0(eslint@8.57.1):
@@ -4898,7 +4898,7 @@ snapshots:
 
   resolve-from@5.0.0: {}
 
-  resolve@1.22.10:
+  resolve@1.22.11:
     dependencies:
       is-core-module: 2.16.1
       path-parse: 1.0.7
@@ -5209,7 +5209,7 @@ snapshots:
   stylelint-value-no-unknown-custom-properties@6.0.1(stylelint@16.25.0(typescript@5.8.3)):
     dependencies:
       postcss-value-parser: 4.2.0
-      resolve: 1.22.10
+      resolve: 1.22.11
       stylelint: 16.25.0(typescript@5.8.3)
 
   stylelint@16.25.0(typescript@5.8.3):
